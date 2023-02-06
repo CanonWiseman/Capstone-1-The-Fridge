@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 bcrypt = Bcrypt()
 db = SQLAlchemy()
 
-class User(db.model):
+class User(db.Model):
     """"User model"""
 
     __tablename__ = 'users'
@@ -99,7 +99,7 @@ class Saved_Ingredient(db.Model):
         primary_key = True
     )
 
-    recipe_saved = db.Column(
+    ingredient_saved = db.Column(
         db.Integer,
         db.ForeignKey('ingredients.id', ondelete = 'cascade'),
         primary_key = True
