@@ -1,0 +1,17 @@
+.main-nav{
+    list-style: none;
+}
+
+.main-nav a{
+    margin-right: 10px;
+    text-decoration: none;
+    color: black;
+}
+
+.main-nav a:last-child{
+    margin-right: 30px;
+}
+
+.nav-bar{
+    padding: 25px;
+}

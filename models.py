@@ -41,6 +41,33 @@ class User(db.Model):
         db.Text
     )
 
+    @classmethod
+    def signup(cls, username, email, password, image_url):
+
+        hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
+
+        user = User(
+            username=username,
+            email=email,
+            password=hashed_pwd,
+            image_url=image_url,
+        )
+
+        db.session.add(user)
+        return user
+
+    @classmethod
+    def validate(cls, username, password):
+
+        user = cls.query.filter_by(username=username).first()
+
+        if user:
+            is_auth = bcrypt.check_password_hash(user.password, password)
+            if is_auth:
+                return user
+
+        return False
+
 class Recipe(db.Model):
     """table for recipes"""
 
