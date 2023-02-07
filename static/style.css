@@ -1,11 +1,16 @@
+body{
+    font-family: Archivo Narrow;
+}
 .main-nav{
     list-style: none;
+
 }
 
 .main-nav a{
     margin-right: 10px;
     text-decoration: none;
     color: black;
+    font-size: 18px;
 }
 
 .main-nav a:last-child{
@@ -14,4 +19,7 @@
 
 .nav-bar{
     padding: 25px;
+    margin-bottom: 2rem;
+    background-color: #dde7cc;
+    border-bottom: 2px solid lightgray;
 }

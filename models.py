@@ -33,8 +33,9 @@ class User(db.Model):
         nullable = False
     )
 
-    profile_image_url = db.Column(
-        db.Text 
+    profile_image = db.Column(
+        db.Text,
+        default="/static/images/default-profile.png", 
     )
 
     saved_recipes = db.Column(
@@ -42,7 +43,7 @@ class User(db.Model):
     )
 
     @classmethod
-    def signup(cls, username, email, password, image_url):
+    def signup(cls, username, email, password, profile_image):
 
         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
 
@@ -50,10 +51,11 @@ class User(db.Model):
             username=username,
             email=email,
             password=hashed_pwd,
-            image_url=image_url,
+            profile_image=profile_image,
         )
 
         db.session.add(user)
+        
         return user
 
     @classmethod

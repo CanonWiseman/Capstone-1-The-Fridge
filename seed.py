@@ -4,3 +4,4 @@ from models import User, Recipe, Saved_Recipe, Ingredient, Saved_Ingredient, Lis
 
 
 db.drop_all()
+db.create_all()
