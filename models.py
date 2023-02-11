@@ -38,8 +38,22 @@ class User(db.Model):
         default="/static/images/default-profile.png", 
     )
 
-    saved_recipes = db.Column(
-        db.Text
+    grocery_lists = db.relationship(
+        "List", 
+        backref = "user", 
+        cascade="all, delete-orphan"
+    )
+
+    saved_recipes = db.relationship(
+        "Recipe",
+        secondary = "saved_recipes",
+        backref = "parents"
+    )
+
+    saved_ingredients = db.relationship(
+        "Ingredient",
+        secondary = "saved_ingredients",
+        backref = "parents"
     )
 
     @classmethod
@@ -84,6 +98,8 @@ class Recipe(db.Model):
         db.Integer,
         nullable = False
     )
+
+
 
 class Saved_Recipe(db.Model):
     """"table to connect users to recipes"""
@@ -144,28 +160,28 @@ class List(db.Model):
         primary_key = True
     )
 
-    created_by = db.Column(
+    user_id = db.Column(
         db.Integer,
         db.ForeignKey('users.id', ondelete='CASCADE'),
         nullable=False,
     )
 
-class List_Ingredient:
-    """"Table for joining ingredients to lists"""
+# class List_Ingredient:
+#     """"Table for joining ingredients to lists"""
 
-    ___tablename__ = "list_ingredients"
+#     ___tablename__ = "list_ingredients"
 
-    list_id = db.Column(
-        db.Integer,
-        db.ForeignKey('lists.id', ondelete = 'cascade'),
-        primary_key = True
-    )
+#     list_id = db.Column(
+#         db.Integer,
+#         db.ForeignKey('lists.id', ondelete = 'cascade'),
+#         primary_key = True
+#     )
 
-    ingredient_id = db.Column(
-        db.Integer,
-        db.ForeignKey('ingredients.id', ondelete = 'cascade'),
-        primary_key = True
-    )
+#     ingredient_id = db.Column(
+#         db.Integer,
+#         db.ForeignKey('ingredients.id', ondelete = 'cascade'),
+#         primary_key = True
+#     )
 
 
 def connect_db(app):

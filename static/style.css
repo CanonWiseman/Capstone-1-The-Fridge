@@ -16,6 +16,9 @@ body{
     margin-right: 30px;
 }
 
+.nav-logo{
+    width: 266px;
+}
 .nav-bar{
     padding: 25px;
     margin-bottom: 4rem;
@@ -23,13 +26,10 @@ body{
     border-bottom: 2px solid lightgray;
 }
 
-.item-tab{
-    list-style: none;
-    display: inline;
-    margin-right: 10px;
-    font-size: 18px;
-}
-
 .main-header{
     margin-bottom: 3rem;
 }
+
+/* .ingredient-container{
+
+} */

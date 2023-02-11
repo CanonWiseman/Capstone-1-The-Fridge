@@ -1,11 +1,12 @@
 import os
 
-from secret import databaseKey
+from secret import *
 from flask import Flask, render_template, request, flash, redirect, session, g, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from forms import LoginForm, RegisterForm
-from models import User
+from models import User, Ingredient, Saved_Ingredient, Recipe, Saved_Recipe
+import requests
 
 
 from models import db, connect_db
@@ -38,6 +39,10 @@ def add_user_to_g():
 
 @app.route('/')
 def index():
+
+    if g.user:
+        return redirect("/home")
+        
     return render_template("index.html")
 
 def do_login(user):
@@ -50,12 +55,6 @@ def do_logout():
 
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
-
-def check_user_creds():
-    """Checks for user in session and returns to index if not"""
-    if not g.user:
-        flash("You must be logged in to continue", "danger")
-        return redirect("/")
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -111,8 +110,27 @@ def signup():
 def home():
     """Home page for logged in users"""
 
-    check_user_creds()
-
+    if not g.user:
+        flash("You must be logged in to continue", "danger")
+        return redirect("/")
 
     return render_template("home.html")
     
+@app.route("/search-ingredients", methods=["GET"])
+def ingredient_page():
+    """Returns page to allow users to add ingredients to their fridge"""
+
+    if not g.user:
+        flash("You must be logged in to continue", "danger")
+        return redirect("/")
+    
+    url = "https://edamam-food-and-grocery-database.p.rapidapi.com/parser"
+
+    querystring = {"ingr":"apple"}
+
+    headers = {
+    }
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+
+    return render_template("ingredient_search.html", test=response)
