@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from forms import LoginForm, RegisterForm
 from models import User, Ingredient, Saved_Ingredient, Recipe, Saved_Recipe
 import requests
+import json
 
 
 from models import db, connect_db
@@ -116,7 +117,7 @@ def home():
 
     return render_template("home.html")
     
-@app.route("/search-ingredients", methods=["GET"])
+@app.route("/ingredients", methods=["GET"])
 def ingredient_page():
     """Returns page to allow users to add ingredients to their fridge"""
 
@@ -124,13 +125,42 @@ def ingredient_page():
         flash("You must be logged in to continue", "danger")
         return redirect("/")
     
+    return render_template("ingredient.html")
+
+@app.route("/ingredients/search/<query>", methods=["GET"])
+def search_ingredients(query):
+    """Calls to ingredient API and returns an ingeredient to user"""
+
+    if not g.user:
+        flash("You must be logged in to continue", "danger")
+        return redirect("/")
+
     url = "https://edamam-food-and-grocery-database.p.rapidapi.com/parser"
 
-    querystring = {"ingr":"apple"}
+    querystring = {"ingr":query}
 
     headers = {
+        "X-RapidAPI-Key": mealAPIKey,
+        "X-RapidAPI-Host": "edamam-food-and-grocery-database.p.rapidapi.com"
     }
 
     response = requests.request("GET", url, headers=headers, params=querystring)
 
-    return render_template("ingredient_search.html", test=response)
+    return response.text
+
+@app.route("/ingredients/add/<foodID>", methods=["POST"])
+def add_ingredients(foodId):
+    """Adds ingredients to users data"""
+
+    if not g.user:
+        flash("You must be logged in to continue", "danger")
+        return redirect("/")
+
+    if Ingredient.check_exists(foodId) == False:
+
+        ingredient = Ingredient(ingredient_id = foodId)
+        db.session.add(ingredient)
+        db.session.commit()
+
+    return True
+

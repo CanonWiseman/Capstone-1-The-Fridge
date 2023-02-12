@@ -30,6 +30,25 @@ body{
     margin-bottom: 3rem;
 }
 
-/* .ingredient-container{
+.ingredient-card{
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 15px;
+    width: 75%;
+    margin-top: 2rem;
+    padding: 20px;
+}
 
-} */
+.ingredient-card img{
+    border-radius: 50%;
+    width: 50%;
+}
+
+.ingredient-card h6{
+    margin-top:.5rem;
+}
+#ingredient-container{
+}
+
+.fa-add:before, .fa-plus:before {
+    color: black;
+}
