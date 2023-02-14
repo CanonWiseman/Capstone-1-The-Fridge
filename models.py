@@ -129,20 +129,21 @@ class Ingredient(db.Model):
     )
 
     ingredient_id = db.Column(
-        db.Integer,
+        db.String(100),
         nullable = False
     )
 
     @classmethod
-    def check_exists(foodId):
+    def check_exists(cls, foodId):
         """Checks if an ingredient is already stored in the database"""
-        ingredient = Ingredient.query.get(foodId)
+        ingredient = Ingredient.query.filter_by(ingredient_id = foodId).first()
 
-        if ingredient:
-            return True
+        if ingredient == None:
+            return False
 
-        return False
         
+        return ingredient
+
 class Saved_Ingredient(db.Model):
     """Table to connect users to saved ingredients"""
 

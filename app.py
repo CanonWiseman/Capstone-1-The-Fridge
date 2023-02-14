@@ -1,7 +1,7 @@
 import os
 
 from secret import *
-from flask import Flask, render_template, request, flash, redirect, session, g, url_for
+from flask import Flask, render_template, request, flash, redirect, session, g, url_for, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from forms import LoginForm, RegisterForm
@@ -42,7 +42,7 @@ def add_user_to_g():
 def index():
 
     if g.user:
-        return redirect("/home")
+        return redirect("/users")
         
     return render_template("index.html")
 
@@ -68,7 +68,7 @@ def login():
 
         if user:
             do_login(user)
-            return redirect("/home")
+            return redirect("/users")
 
         flash("Invalid credentials.", 'danger')
 
@@ -102,12 +102,12 @@ def signup():
 
         do_login(user)
 
-        return redirect("/home")
+        return redirect("/users")
 
     else:
         return render_template('signup.html', form=form)
 
-@app.route("/home", methods=["GET"])
+@app.route("/users", methods=["GET"])
 def home():
     """Home page for logged in users"""
 
@@ -126,6 +126,20 @@ def ingredient_page():
         return redirect("/")
     
     return render_template("ingredient.html")
+
+@app.route("/users/saved_ingredients", methods=["GET"])
+def get_saved_ingredients():
+    """Gets all users saved recipes then returns an array of all recipes"""
+
+    if not g.user:
+        flash("You must be logged in to continue", "danger")
+        return redirect("/")
+
+    user = User.query.get_or_404(g.user.id)
+
+    saved_ingredients = [ingredient.ingredient_id for ingredient in user.saved_ingredients]
+
+    return jsonify(saved_ingredients)
 
 @app.route("/ingredients/search/<query>", methods=["GET"])
 def search_ingredients(query):
@@ -148,7 +162,7 @@ def search_ingredients(query):
 
     return response.text
 
-@app.route("/ingredients/add/<foodID>", methods=["POST"])
+@app.route("/ingredients/add/<foodId>", methods=["POST", "GET"])
 def add_ingredients(foodId):
     """Adds ingredients to users data"""
 
@@ -156,11 +170,19 @@ def add_ingredients(foodId):
         flash("You must be logged in to continue", "danger")
         return redirect("/")
 
-    if Ingredient.check_exists(foodId) == False:
-
+    ingredient = Ingredient.check_exists(foodId)
+    if ingredient:
+        g.user.saved_ingredients.append(ingredient)
+        db.session.commit()
+        return redirect('/users')
+    
+    else:
         ingredient = Ingredient(ingredient_id = foodId)
         db.session.add(ingredient)
+        g.user.saved_ingredients.append(ingredient)
         db.session.commit()
+        return redirect('/users')
 
-    return True
+
+
 

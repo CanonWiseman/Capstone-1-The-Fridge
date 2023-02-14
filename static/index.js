@@ -30,9 +30,6 @@ $("#ingredientSearch").on("change", function(){
                 "<p>Something went wrong please try again</p>"
             )
         })
-        .then(function () {
-            // always executed
-        });
     }
 
 });
