@@ -144,6 +144,7 @@ class Ingredient(db.Model):
         
         return ingredient
 
+    
 class Saved_Ingredient(db.Model):
     """Table to connect users to saved ingredients"""
 

@@ -46,9 +46,19 @@ body{
 .ingredient-card h6{
     margin-top:.5rem;
 }
-#ingredient-container{
-}
 
 .fa-add:before, .fa-plus:before {
     color: black;
+    cursor: pointer;
 }
+
+.fa-add:before, .fa-minus:before {
+    color: black;
+    cursor: pointer;
+}
+
+.fa-cutlery:before, .fa-utensils:before{
+    color: black;
+    cursor: pointer;
+}
+  

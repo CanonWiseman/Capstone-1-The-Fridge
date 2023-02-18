@@ -140,6 +140,45 @@ def get_saved_ingredients():
     saved_ingredients = [ingredient.ingredient_id for ingredient in user.saved_ingredients]
 
     return jsonify(saved_ingredients)
+@app.route("/users/ingredients/add/<foodId>", methods=["POST", "GET"])
+def add_ingredients(foodId):
+    """Adds ingredients to users data"""
+
+    if not g.user:
+        flash("You must be logged in to continue", "danger")
+        return redirect("/")
+    
+    ingredient = Ingredient.check_exists(foodId)
+
+    if ingredient in g.user.saved_ingredients:
+        return "exists"
+
+    if ingredient:
+        g.user.saved_ingredients.append(ingredient)
+        db.session.commit()
+        return "Success"
+    
+    else:
+        ingredient = Ingredient(ingredient_id = foodId)
+        db.session.add(ingredient)
+        g.user.saved_ingredients.append(ingredient)
+        db.session.commit()
+        return "Success"
+
+@app.route("/users/ingredients/remove/<foodId>", methods=["GET", "POST"])
+def remove_ingredients(foodId):
+    """Remove ingredients from users data"""
+
+    if not g.user:
+        flash("You must be logged in to continue", "danger")
+        return redirect("/")
+
+    ingredient = Ingredient.query.filter_by(ingredient_id = foodId).first()
+
+    g.user.saved_ingredients.remove(ingredient)
+    db.session.commit()
+
+    return "Success"
 
 @app.route("/ingredients/search/<query>", methods=["GET"])
 def search_ingredients(query):
@@ -154,7 +193,7 @@ def search_ingredients(query):
     querystring = {"ingr":query}
 
     headers = {
-        "X-RapidAPI-Key": mealAPIKey,
+        "X-RapidAPI-Key": IngredientAPIKey,
         "X-RapidAPI-Host": "edamam-food-and-grocery-database.p.rapidapi.com"
     }
 
@@ -162,27 +201,37 @@ def search_ingredients(query):
 
     return response.text
 
-@app.route("/ingredients/add/<foodId>", methods=["POST", "GET"])
-def add_ingredients(foodId):
-    """Adds ingredients to users data"""
+@app.route("/recipes/search", methods=["GET", "POST"])
+def search_recipes():
+    """Calls to recipe API and returns recipe/s to user"""
+    
 
     if not g.user:
         flash("You must be logged in to continue", "danger")
-        return redirect("/")
+        return redirect("/") 
 
-    ingredient = Ingredient.check_exists(foodId)
-    if ingredient:
-        g.user.saved_ingredients.append(ingredient)
-        db.session.commit()
-        return redirect('/users')
+    ingredients = request.json["ingredients"]
+
+    url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch"
+
+    querystring = {"query": request.json["recipeType"], "includeIngredients": ",".join(ingredients)}
+
+    headers = {
+	"X-RapidAPI-Key": MealApiKey3,
+	"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
+}
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+
+    return response
+
+@app.route("/recipes", methods=["GET", "POST"])
+def recipes():
+    """Returns recipe page"""
+
+    if not g.user:
+        flash("You must be logged in to continue", "danger")
+        return redirect("/") 
+
+
     
-    else:
-        ingredient = Ingredient(ingredient_id = foodId)
-        db.session.add(ingredient)
-        g.user.saved_ingredients.append(ingredient)
-        db.session.commit()
-        return redirect('/users')
-
-
-
-

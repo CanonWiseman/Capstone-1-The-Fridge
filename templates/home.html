@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<div class="container">
+<div class="container-fluid">
     <div class="row text-center">
         <div class="col-12 main-header">
             <h1>Welcome {{ g.user.username }}</h1>
@@ -18,19 +18,32 @@
                 </div>
             </div>
         </div> -->
-        <div class="col-lg-9">
+        <div class="col-lg-7">
             <h5>Your Ingredients</h5> 
-            <div class="ingredient-container row">
-                <a href="/ingredients" class="btn btn-primary btn-sm">Add Ingredients</a>
+            <p class="results pt-4"></p>
+            <div class="row" id="ingredient-container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-3">
+                        <a href="/ingredients" class="btn btn-primary btn-sm">Add Ingredients</a>
+                    </div>
+                </div>
                 {% if not g.user.saved_ingredients %}
-                <p>You have no ingredients saved</p>
+                <p class="mt-4">You have no ingredients saved</p>
                 {% endif %}
 
                 
             </div>
         </div>
-        <div class="col-lg-3">
-            <p>Find a recipe</p>
+        <div class="col-lg-5">
+            <h5 class="">Find Recipe</h5>
+                <label for="recipeType">Type of recipe</label>
+                <input type="text" class="form-control" id="recipeType" placeholder="eg. Pasta">
+                <button class="btn btn-sm btn-primary find-recipe">Find Recipe</button>
+            <p class="results2 pt-4"></p>
+            
+            <div class="row d-flex justify-content-center" id="recipe-container">
+                
+            </div>
         </div>
     </div>
 </div>

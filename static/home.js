@@ -5,16 +5,17 @@ $(function() {
             axios.get(`/ingredients/search/${ingredient_id}`)
             .then(function (response) {
                 console.log(response)
-                $(".ingredient-container").append(`
-                    <div class='col-lg-3 col-md-4 col-6 my-auto'>
-                    <div class='ingredient-card'>
+                $("#ingredient-container").append(`
+                    <div class='col-md-4 col-6 my-auto'>
+                    <div class='ingredient-card d-flex align-items-center flex-column'>
                     <img src='${response.data.hints[0].food.image || "/static/images/default-ingredient-img.png"}' alt='food image'/>
                     <h6>${response.data.hints[0].food.label}</h6>
-                    <p>Category: ${response.data.hints[0].food.category}</p>
-                    <a href='/ingredients/remove/${response.data.hints[0].food.foodId}'><i class="fa-solid fa-plus"></i></a>
+                    <i data-food-id ='${response.data.hints[0].food.foodId}' class="fa-solid fa-minus remove-ingredient mb-3"></i>
+                    <i class="fa-solid fa-utensils add-to-pot"></i>
+                    </div>
                     </div>
                     </div
-                    `
+                    `    
                 )
                 
             })
