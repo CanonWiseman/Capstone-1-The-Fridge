@@ -15,7 +15,6 @@ $("#ingredientSearch").on("change", function(){
                     <img src='${ingredient.food.image || "/static/images/default-ingredient-img.png"}' alt='food image'/>
                     <h6>${ingredient.food.label}</h6>
                     <i data-food-id ='${ingredient.food.foodId}' class="add-ingredient btn btn-secondary">Add</i>
-                    <i data-food-id ='${ingredient.food.foodId}' class="add-ingredient btn btn-secondary">More info</i>
                     </div>
                     </div
                     `
@@ -57,7 +56,6 @@ $("#ingredient-container").on("click", "i", function(e){
         axios.get(`/users/ingredients/remove/${foodId}`)
         .then(function (response) {
             if (response.data == "Success"){
-                $('.results').text("Ingredient removed");
                 parentElem.html("<p>Ingredient Removed!</p>")
             }
         })
@@ -157,54 +155,63 @@ $(".recipes").on("click", ".save-recipe", function(){
         })
 })
 
-// function recipeModal(content){
-//     $(".modal1-content").empty();
-    
+function recipeModal(response){
+    $(".modal1-content").children().empty();
+        const recipeSteps = response.data.analyzedInstructions[0].steps;
+        const ingredientList = response.data.extendedIngredients;
+        const recipeTitle = response.data.title;
+        const recipeImage = response.data.image;
+        $(".modal1-img").append(`
+            <img src='${recipeImage}'/>
+        `);
 
-// };
+        $(".modal1-title").append(`
+            <h5>${recipeTitle}</h5>
+        `);
 
-$(".recipes").on("click", ".more-info", function(){
+        $(".modal1-ingredients").append("<h6>Ingredients</h6>")
+        for(const ingredient of ingredientList){
+            $(".modal1-ingredients").append(`
+            <p>${ingredient.original}</p>
+            `)
+        }
+        
+        $(".modal1-instructions").append("<h6>Instructions</h6>")
+        for(const step of recipeSteps){
+            $(".modal1-instructions").append(`
+            <p>${step.step}</p>
+            `)
+        }
+        $(".modal1").show();
+};
+
+
+$(".recipe-container").on("click", ".more-info", function(){
     const recipeId = $(this)[0].attributes[0].nodeValue;
     const parentElem = $(this).parent();
 
     axios.get(`/recipes/get/${recipeId}`)
         .then(function (response) {
-            
             console.log(response);
-            $(".modal1-content").children().empty();
-            const recipeSteps = response.data.analyzedInstructions[0].steps;
-            const ingredientList = response.data.extendedIngredients;
-            const recipeTitle = response.data.title;
-            const recipeImage = response.data.image;
-            $(".modal1-img").append(`
-                <img src='${recipeImage}'/>
-            `);
-
-            $(".modal1-title").append(`
-                <h5>${recipeTitle}</h5>
-            `);
-
-            $(".modal1-ingredients").append("<h6>Ingredients</h6>")
-            for(const ingredient of ingredientList){
-                $(".modal1-ingredients").append(`
-                <p>${ingredient.original}</p>
-                `)
-            }
-            
-            $(".modal1-instructions").append("<h6>Instructions</h6>")
-            for(const step of recipeSteps){
-                console.log(step);
-                $(".modal1-instructions").append(`
-                <p>${step.step}</p>
-                `)
-            }
-
-            
-
-            $(".modal1").show();
+            recipeModal(response);
         })
         .catch(function (error) {
-            parentElem.html("<p>This recipe is already saved</p>");
+            parentElem.html("<p>Recipe details not available</p>");
+        })
+});
+
+$(".recipe-container").on("click", ".remove-recipe", function(){
+    const parentElem = $(this).parent();
+    const foodId = $(this)[0].dataset.foodId;
+
+    axios.get(`/users/recipes/remove/${foodId}`)
+        .then(function (response) {
+            if (response.data == "Success"){
+                parentElem.html("<p>Recipe Removed!</p>")
+            }
+        })
+        .catch(function (error) {
+            parentElem.html("<p>Something Went wrong please try again later</p>")
         })
 });
 

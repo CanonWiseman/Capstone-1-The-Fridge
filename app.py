@@ -264,7 +264,7 @@ def search_recipes():
 
     return response.text
 
-@app.route("/recipes", methods=["GET", "POST"])
+@app.route("/users/recipes", methods=["GET", "POST"])
 def recipes():
     """Returns recipe page"""
 
@@ -303,7 +303,7 @@ def get_saved_recipes():
 
     user = User.query.get_or_404(g.user.id)
 
-    saved_recipes = [Recipe.recipe_id for recipe in user.saved_recipe]
+    saved_recipes = [recipe.recipe_id for recipe in user.saved_recipes]
 
     return jsonify(saved_recipes)
     
