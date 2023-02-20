@@ -71,58 +71,57 @@ $("#ingredient-container").on("click", "i", function(e){
     }
 
     else if($(this).hasClass("add-to-pot") == true){
-        $("#recipe-container").append(parentElem.parent());
+        $("#pot-container").append(parentElem.parent());
         parentElem.children(".add-to-pot").hide();
         parentElem.children("p").hide();
+        $(".results2").empty();
     }
 });
 
-$("#recipe-container").on("click", "i", function(e){
+$("#pot-container").on("click", "i", function(e){
     const parentElem = $(this).parent();
     $("#ingredient-container").append(parentElem.parent());
     parentElem.children(".add-to-pot").show();
     parentElem.children("p").show();
+    
 });
 
 $(".find-recipe").on("click", function(e){
     e.preventDefault();
-    let $allIngredientCards = $("#recipe-container").find("h6");
+    if($("#recipeType").val() == ""){
+        $("#recipeType").css("border", "1px solid red")
+        return false;
+    }
+    let $allIngredientCards = $("#pot-container").find("h6");
     console.log($allIngredientCards);
+
     let potIngredients = [];
     
     for(let ingredient of $allIngredientCards){
         potIngredients.push(ingredient.innerText);
-        console.log(potIngredients);
+    }
+
+    if(potIngredients.length == 0 ){
+        $(".results2").text("Please add ingredients to continue")
+        return false;
     }
 
     potIngredients.reduce((f, s) => `${f},${s}`)
+    potIngredients = potIngredients.toString();
+    
+    axios.get('/recipes/search', {params: {ingredients: potIngredients, recipeType: $("#recipeType").val()}})
+        .then(function (response) {
+           $(".ingredients").hide();
+           $(".recipes").show();
+            console.log(response);
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+            
+        })
+});
 
-    // $.ajax({
-    //     url: "/recipes/search",
-    //     type: "GET",
-    //     data: {
-    //         ingredients: potIngredients,
-    //         recipeType: $("#recipeType").val()
-    //     },
-    //     success: function (response) {
-    //         console.log(response)
-    //     }
-    // });
-
-    axios.get('/recipes/search', {
-        params: {
-            ingredients: potIngredients,
-            recipeType: $("#recipeType").val()
-        }
-      }).then(function(response){
-        console.log(response)
-      })
-    // axios({
-    // method: 'post',
-    // url: '/recipes/search',
-    // data: {
-    //     ingredients: potIngredients,
-    //     recipeType: $("#recipeType").val()
-    // }
-    // });
+$(function() {
+    $(".recipes").hide();
 });

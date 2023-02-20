@@ -210,11 +210,9 @@ def search_recipes():
         flash("You must be logged in to continue", "danger")
         return redirect("/") 
 
-    ingredients = request.json["ingredients"]
-
     url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch"
 
-    querystring = {"query": request.json["recipeType"], "includeIngredients": ",".join(ingredients)}
+    querystring = {"query": request.args["recipeType"], "includeIngredients": request.args["ingredients"]}
 
     headers = {
 	"X-RapidAPI-Key": MealApiKey3,
@@ -223,7 +221,7 @@ def search_recipes():
 
     response = requests.request("GET", url, headers=headers, params=querystring)
 
-    return response
+    return response.text
 
 @app.route("/recipes", methods=["GET", "POST"])
 def recipes():
@@ -232,6 +230,8 @@ def recipes():
     if not g.user:
         flash("You must be logged in to continue", "danger")
         return redirect("/") 
+
+    return render_template("recipes.html")
 
 
     
