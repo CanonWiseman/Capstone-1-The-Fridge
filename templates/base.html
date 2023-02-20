@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <div class="row nav-bar">
             <div class="col-3 d-none d-md-block">
-                <a href="/users"><img class="nav-logo" src="/static/images/logo-no-background.png"></a>
+                <a href="/users"><img class="nav-logo" src="/static/images/logo2.png"></a>
             </div>
             <div class="col-md-9 col-12">
                 <ul class="d-flex justify-content-end main-nav">
@@ -22,12 +22,22 @@
                     <li class=""><a href="/login">Login</a></li>
                     <li class=""><a href="/signup">Register</a></li>
                     {% else %}
-                    <li class=""><a href="#">profile</a></li>
                     <li><a href="#">My Recipes</a></li>
-                    <li><a href="#">Grocery Lists</a></li>
                     <li><a href="/logout">Logout</a></li>
                     {% endif %}
                 </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal1">
+        <div class="container-fluid modal1-container">
+            <i class="fa fa-minus close"></i>
+            <div class="row modal1-content text-center">
+                <div class="modal1-img col-12"></div>
+                <div class="modal1-title col-12"></div>
+                <div class="modal1-ingredients col-6"></div>
+                <div class="modal1-instructions col-6"></div>
             </div>
         </div>
     </div>

@@ -99,7 +99,15 @@ class Recipe(db.Model):
         nullable = False
     )
 
+    @classmethod
+    def check_exists(cls, recipeId):
+        """Checks if an ingredient is already stored in the database"""
+        recipe = Recipe.query.filter_by(recipe_id = recipeId).first()
 
+        if recipe == None:
+            return False
+
+        return recipe
 
 class Saved_Recipe(db.Model):
     """"table to connect users to recipes"""
@@ -141,7 +149,6 @@ class Ingredient(db.Model):
         if ingredient == None:
             return False
 
-        
         return ingredient
 
     

@@ -129,7 +129,7 @@ def ingredient_page():
 
 @app.route("/users/saved_ingredients", methods=["GET"])
 def get_saved_ingredients():
-    """Gets all users saved recipes then returns an array of all recipes"""
+    """Gets all users saved ingredients then returns an array of all ingredients"""
 
     if not g.user:
         flash("You must be logged in to continue", "danger")
@@ -140,6 +140,7 @@ def get_saved_ingredients():
     saved_ingredients = [ingredient.ingredient_id for ingredient in user.saved_ingredients]
 
     return jsonify(saved_ingredients)
+
 @app.route("/users/ingredients/add/<foodId>", methods=["POST", "GET"])
 def add_ingredients(foodId):
     """Adds ingredients to users data"""
@@ -176,6 +177,46 @@ def remove_ingredients(foodId):
     ingredient = Ingredient.query.filter_by(ingredient_id = foodId).first()
 
     g.user.saved_ingredients.remove(ingredient)
+    db.session.commit()
+
+    return "Success"
+
+@app.route('/users/recipes/add/<recipeId>', methods=["GET", "POST"])
+def add_recipe(recipeId):
+    """Adds recipe to users data"""
+
+    if not g.user:
+        flash("You must be logged in to continue", "danger")
+        return redirect("/")
+    
+    recipe = Recipe.check_exists(recipeId)
+
+    if recipe in g.user.saved_recipes:
+        return "exists"
+
+    if recipe:
+        g.user.saved_recipes.append(recipe)
+        db.session.commit()
+        return "Success"
+    
+    else:
+        recipe = Recipe(recipe_id = recipeId)
+        db.session.add(recipe)
+        g.user.saved_recipes.append(recipe)
+        db.session.commit()
+        return "Success"
+
+@app.route("/users/recipes/remove/<recipeId>", methods=["GET", "POST"])
+def remove_recipe(recipeId):
+    """Remove recipe from users data"""
+
+    if not g.user:
+        flash("You must be logged in to continue", "danger")
+        return redirect("/")
+
+    recipe = Recipe.query.filter_by(recipe_id = recipeId).first()
+
+    g.user.saved_recipes.remove(recipe)
     db.session.commit()
 
     return "Success"
@@ -217,7 +258,7 @@ def search_recipes():
     headers = {
 	"X-RapidAPI-Key": MealApiKey3,
 	"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
-}
+    }
 
     response = requests.request("GET", url, headers=headers, params=querystring)
 
@@ -233,5 +274,36 @@ def recipes():
 
     return render_template("recipes.html")
 
+@app.route('/recipes/get/<int:recipeId>')
+def get_recipe(recipeId):
+    """returns info on a single recipe"""
 
+    if not g.user:
+        flash("You must be logged in to continue", "danger")
+        return redirect("/") 
+
+    url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/{recipeId}/information".format(recipeId = recipeId)
+
+    headers = {
+        "X-RapidAPI-Key": MealApiKey3,
+        "X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
+    }
+
+    response = requests.request("GET", url, headers=headers)
+
+    return response.text
+
+@app.route("/users/saved_recipes", methods=["GET"])
+def get_saved_recipes():
+    """Gets all users saved recipes then returns an array of all recipes"""
+
+    if not g.user:
+        flash("You must be logged in to continue", "danger")
+        return redirect("/")
+
+    user = User.query.get_or_404(g.user.id)
+
+    saved_recipes = [Recipe.recipe_id for recipe in user.saved_recipe]
+
+    return jsonify(saved_recipes)
     

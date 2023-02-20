@@ -16,9 +16,7 @@ body{
     margin-right: 30px;
 }
 
-.nav-logo{
-    width: 266px;
-}
+
 .nav-bar{
     padding: 25px;
     margin-bottom: 4rem;
@@ -56,7 +54,7 @@ body{
 }
 
 .recipe-card img{
-    border-radius: 50%;
+    border-radius: 15%;
     width: 50%;
 }
 
@@ -78,4 +76,47 @@ body{
     color: black;
     cursor: pointer;
 }
-  
+
+.btn-secondary{
+    font-size: 14px;
+    background-color: #DDE7CC;
+    color: #000000;
+    border: none;
+}
+
+.btn-secondary:hover{
+    background-color: #92a176;
+}
+
+.modal1{
+    display: none;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 1;
+    width: 50%; 
+    height: 75%; 
+    overflow: auto; 
+    background-color: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.modal1-img img{
+    width: 25%;
+    border-radius: 15%;
+}
+
+.modal1-title h6{
+    border-bottom: 1px solid black;
+}
+
+.modal1-ingredients h6{
+    border-bottom: 1px solid black;
+}
+
+.modal1-instructions h6{
+    border-bottom: 1px solid black;
+}
+
+
+

@@ -10,8 +10,8 @@ $(function() {
                     <div class='ingredient-card d-flex align-items-center flex-column'>
                     <img src='${response.data.hints[0].food.image || "/static/images/default-ingredient-img.png"}' alt='food image'/>
                     <h6>${response.data.hints[0].food.label}</h6>
-                    <i data-food-id ='${response.data.hints[0].food.foodId}' class="fa-solid fa-minus remove-ingredient mb-3"></i>
-                    <i class="fa-solid fa-utensils add-to-pot"></i>
+                    <i data-food-id ='${response.data.hints[0].food.foodId}' class="btn btn-secondary remove-ingredient mb-3">Remove Ingredient</i>
+                    <i class="btn btn-secondary add-to-pot">Add to Pot</i>
                     </div>
                     </div>
                     </div
