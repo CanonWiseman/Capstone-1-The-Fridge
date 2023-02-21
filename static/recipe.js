@@ -1,7 +1,7 @@
 $(function() {
     axios.get('/users/saved_recipes')
     .then(function (response) {
-        for(recipe_id of response.data){
+        for(recipe_id of response.data){ 
             axios.get(`/recipes/get/${recipe_id}`)
             .then(function (response) {
                 console.log(response)
