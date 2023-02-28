@@ -17,7 +17,7 @@ CURR_USER_KEY = "curr_user"
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ.get('DATABASE_URL', 'postgresql://postgres:' + databaseKey + '@localHost:5432/TheFridge'))
+    os.environ.get('postgres://rsirnlkgnzigef:' + databaseKey + '@ec2-34-194-158-176.compute-1.amazonaws.com:5432/dbh06onu1m8a7l'))
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
