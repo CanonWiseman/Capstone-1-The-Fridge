@@ -49,6 +49,7 @@ def do_login(user):
     """Stores user in session"""
 
     session[CURR_USER_KEY] = user.id
+    
 
 def do_logout():
     """Deletes user from Session"""
@@ -59,7 +60,7 @@ def do_logout():
 @app.route('/login', methods=["GET", "POST"])
 def login():
     """Handles user login"""
-    
+    db.create_all()
     form = LoginForm()
 
     if form.validate_on_submit():
