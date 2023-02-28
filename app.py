@@ -307,3 +307,6 @@ def get_saved_recipes():
 
     return jsonify(saved_recipes)
     
+@app.route("/favicon.ico")
+def favicon():
+    return
