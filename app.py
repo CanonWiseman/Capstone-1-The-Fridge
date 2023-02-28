@@ -1,5 +1,6 @@
 import os
 
+from secret import *
 from flask import Flask, render_template, request, flash, redirect, session, g, url_for, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
@@ -16,15 +17,17 @@ CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:38584b1754dc0b5c85fc0411e5c597549fd78f243c08c3491de8a0802d60fa7d@ec2-34-194-158-176.compute-1.amazonaws.com:5432/dbh06onu1m8a7l'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "development uri")
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 
-db.create_all()
+
+
 connect_db(app)
+db.create_all()
 
 @app.before_request
 def add_user_to_g():
