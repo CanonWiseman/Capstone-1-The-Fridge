@@ -7,6 +7,7 @@ from forms import LoginForm, RegisterForm
 from models import User, Ingredient, Saved_Ingredient, Recipe, Saved_Recipe
 import requests
 import json
+from collections.abc import Mapping
 
 
 from models import db, connect_db
