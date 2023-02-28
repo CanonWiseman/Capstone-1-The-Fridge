@@ -51,12 +51,14 @@ def do_login(user):
 
     session[CURR_USER_KEY] = user.id
 
+    return 
 def do_logout():
     """Deletes user from Session"""
 
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
 
+    return 
 @app.route('/login', methods=["GET", "POST"])
 def login():
     """Handles user login"""
