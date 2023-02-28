@@ -1,6 +1,6 @@
 import os
 
-from secret import *
+# from secret import *
 from flask import Flask, render_template, request, flash, redirect, session, g, url_for, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
