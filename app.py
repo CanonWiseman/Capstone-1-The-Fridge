@@ -60,7 +60,7 @@ def do_logout():
 @app.route('/login', methods=["GET", "POST"])
 def login():
     """Handles user login"""
-    db.create_all()
+    
     form = LoginForm()
 
     if form.validate_on_submit():
