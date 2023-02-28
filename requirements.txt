@@ -57,7 +57,7 @@ typing_extensions==4.4.0
 urllib3==1.26.14
 validators==0.20.0
 wcwidth==0.1.7
-Werkzeug==0.14.1
+Werkzeug==2.2.3
 WTForms==2.2.1
 WTForms-Alchemy==0.18.0
 WTForms-Components==0.10.5
