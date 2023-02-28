@@ -42,6 +42,7 @@ ptyprocess==0.6.0
 pycparser==2.19
 pycryptodome==3.16.0
 Pygments==2.2.0
+python==3.10.3
 pyqtgraph @ git+https://github.com/pyqtgraph/pyqtgraph.git@c509b955cb69de9754131e30dc591736a3ad3e07
 python-dateutil==2.7.3
 requests==2.28.2
