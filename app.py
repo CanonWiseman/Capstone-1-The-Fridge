@@ -18,8 +18,8 @@ CURR_USER_KEY = "curr_user"
 app = Flask(__name__)
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "development uri")
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ.get('DATABASE_URL', 'postgresql://postgres:' + databaseKey + '@localHost:5432/thefridge2'))
+# app.config['SQLALCHEMY_DATABASE_URI'] = (
+#     os.environ.get('DATABASE_URL', 'postgresql://postgres:' + databaseKey + '@localHost:5432/thefridge2'))
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
@@ -29,7 +29,9 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 
 
 connect_db(app)
-db.create_all()
+with app.app_context():
+        db.create_all()
+
 
 @app.before_request
 def add_user_to_g():
