@@ -49,16 +49,14 @@ def index():
 def do_login(user):
     """Stores user in session"""
 
-    
+    session[CURR_USER_KEY] = user.id
 
-    return 
 def do_logout():
     """Deletes user from Session"""
 
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
 
-    return 
 @app.route('/login', methods=["GET", "POST"])
 def login():
     """Handles user login"""
@@ -69,7 +67,7 @@ def login():
         user = User.validate(form.username.data,form.password.data)
 
         if user:
-            session[CURR_USER_KEY] = user.id
+            do_login(user)
             return redirect("/users")
 
         flash("Invalid credentials.", 'danger')
@@ -102,7 +100,7 @@ def signup():
             flash("Username already taken", 'danger')
             return render_template('signup.html', form=form)
 
-        session[CURR_USER_KEY] = user.id
+        do_login(user)
 
         return redirect("/users")
 
