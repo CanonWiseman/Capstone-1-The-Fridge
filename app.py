@@ -49,7 +49,7 @@ def index():
 def do_login(user):
     """Stores user in session"""
 
-    session[CURR_USER_KEY] = user.id
+    
 
     return 
 def do_logout():
@@ -69,7 +69,7 @@ def login():
         user = User.validate(form.username.data,form.password.data)
 
         if user:
-            do_login(user)
+            session[CURR_USER_KEY] = user.id
             return redirect("/users")
 
         flash("Invalid credentials.", 'danger')
@@ -102,7 +102,7 @@ def signup():
             flash("Username already taken", 'danger')
             return render_template('signup.html', form=form)
 
-        do_login(user)
+        session[CURR_USER_KEY] = user.id
 
         return redirect("/users")
 
