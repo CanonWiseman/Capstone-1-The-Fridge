@@ -31,8 +31,7 @@ MealApiKey3 = os.environ.get("MealApiKey3", "meal  key")
 
 
 connect_db(app)
-with app.app_context():
-    db.create_all()
+db.create_all()
 
 
 @app.before_request
