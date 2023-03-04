@@ -28,7 +28,7 @@ Some of the future goals I would like to see in this project is a lot more infor
 
 links to the apis
 
-Ingredient API: https://rapidapi.com/edamam/api/edamam-food-and-grocery-database/ __
-Meal API: https://rapidapi.com/spoonacular/api/recipe-food-nutrition/ __
-Database Schema: https://app.diagrams.net/#G1nkdCk0dsHsx6PjiI653i-FE7xUwsZfUP __
+Ingredient API: https://rapidapi.com/edamam/api/edamam-food-and-grocery-database/ <br />
+Meal API: https://rapidapi.com/spoonacular/api/recipe-food-nutrition/ <br />
+Database Schema: https://app.diagrams.net/#G1nkdCk0dsHsx6PjiI653i-FE7xUwsZfUP <br />
 not everything in the schema was used in the final product
