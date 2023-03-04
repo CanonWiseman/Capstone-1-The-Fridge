@@ -26,4 +26,7 @@ The user is also able to revisit any recipes that they have saved.
 
 Some of the future goals I would like to see in this project is a lot more information about both ingredients as well as recipes. This will include both nutrition information as well as a similar recipe function so the users can more easily flow from one recipe to the next. I would like to add the ability to create your own recipe books and create lists of ingredients so it is easier for the user to take the app from the home to the store.
 
+links to the apis
 
+Ingredient API: https://rapidapi.com/edamam/api/edamam-food-and-grocery-database/
+Meal API: https://rapidapi.com/spoonacular/api/recipe-food-nutrition/
