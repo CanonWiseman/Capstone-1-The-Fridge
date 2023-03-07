@@ -1,6 +1,8 @@
 # Capstone-1-The-Fridge
 Springboard capstone 1 project
 
+https://capstone-1-canon.herokuapp.com/
+
 This project is my first capstone project and is still a work in progress as there is many more features that I would love to add in the future. 
 
 The overall flow of the project is users will log in and see an empty 'fridge'.
